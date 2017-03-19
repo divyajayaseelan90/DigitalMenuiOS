@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class MenuViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
+class MenuViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate /*,UITableViewDataSource,UITableViewDelegate*/ {
     
     @IBOutlet weak var menuTableView: UITableView!
     @IBOutlet weak var restaurantScrollView: UIScrollView!
@@ -24,13 +24,21 @@ class MenuViewController: UIViewController,UITableViewDataSource,UITableViewDele
     var sortedArrayOfRestSpls = [NSDictionary]()
 
     var restSpl : String?
+    
+    @IBOutlet weak var itemCollectionView: UICollectionView! {
+        didSet {
+            
+          
+            itemCollectionView.register(CategoryMenuTableViewCell.nib, forCellWithReuseIdentifier: CategoryMenuTableViewCell.identifier)
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
       bgImageView.isHidden = true
       NotificationCenter.default.addObserver(self, selector: #selector(CategoryViewController.methodOfReceivedNotification), name:NSNotification.Name(rawValue: DigitalMenu.LocalNotification.refreshMenu), object: nil)
 
-     menuTableView.register(UINib(nibName: CategoryMenuTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: CategoryMenuTableViewCell.identifier)
+     //menuTableView.register(UINib(nibName: CategoryMenuTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: CategoryMenuTableViewCell.identifier)
         
         
         
@@ -144,7 +152,9 @@ class MenuViewController: UIViewController,UITableViewDataSource,UITableViewDele
         }
  
         self.restaurantScrollView.contentSize = CGSize(width: 185 * CGFloat(sortedArrayOfRestSpls.count), height: self.restaurantScrollView.frame.size.height)
-        menuTableView.reloadData()
+//        menuTableView.reloadData()
+        
+        itemCollectionView.reloadData()
 
     }
     
@@ -172,9 +182,35 @@ class MenuViewController: UIViewController,UITableViewDataSource,UITableViewDele
         
         restSpl = dic["name"] as? String
 
-        menuTableView.reloadData()
+        //menuTableView.reloadData()
+        itemCollectionView.reloadData()
+
         prevBtn = button
     }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if (restSpl != nil ){
+            
+            let arrayOfRestItems = dicOfRestSplItems[restSpl!] as? [NSDictionary]
+            return (arrayOfRestItems?.count)!
+        }
+        return 0
+    
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryMenuTableViewCell.identifier, for: indexPath) as! CategoryMenuTableViewCell
+        let arrayOfRestItems = dicOfRestSplItems[restSpl!] as? [NSDictionary]
+
+        cell.loadSpecialItem(dicOfItem: (arrayOfRestItems?[indexPath.row])!)
+        cell.itemTapDelegate = self
+
+        return cell
+
+    }
+   
+    /*
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -218,12 +254,11 @@ class MenuViewController: UIViewController,UITableViewDataSource,UITableViewDele
         let arrayOfRestItems = dicOfRestSplItems[restSpl!] as? [NSDictionary]
         cell.loadSpecialItem(arrayOfItems: arrayOfRestItems!)
         
-        
         return cell
         
         
     }
-
+*/
 }
 extension MenuViewController : itemTapDelegate
 {

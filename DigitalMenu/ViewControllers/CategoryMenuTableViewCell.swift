@@ -11,10 +11,18 @@ protocol itemTapDelegate
 {
     func itemTap(detailDic : NSDictionary)
 }
-class CategoryMenuTableViewCell: UITableViewCell {
+class CategoryMenuTableViewCell: UICollectionViewCell {
     
     class var identifier:String {
         return "CategoryMenuTableViewCell"
+    }
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+    }
+    class var nib: UINib {
+        return UINib(nibName: identifier, bundle: nil)
+        
     }
 
     @IBOutlet weak var fv_menuImage: UIImageView!
@@ -23,113 +31,113 @@ class CategoryMenuTableViewCell: UITableViewCell {
     @IBOutlet weak var fv_menuTitle: UILabel!
     @IBOutlet weak var fv_menuTitlePrice: UIButton!
    
-    
-    @IBOutlet weak var sv_menuImage: UIImageView!
-    @IBOutlet weak var sv_menuIndicator: UIImageView!
-    @IBOutlet weak var sv_menuTitle: UILabel!
-    @IBOutlet weak var sv_menuTitlePrice: UIButton!
-  
-    
-    @IBOutlet weak var tv_menuImage: UIImageView!
-    @IBOutlet weak var tv_menuIndicator: UIImageView!
-    @IBOutlet weak var tv_menuTitle: UILabel!
-    @IBOutlet weak var tv_menuTitlePrice: UIButton!
- 
-    
-    @IBOutlet weak var fouthv_menuImage: UIImageView!
-    @IBOutlet weak var fouthv_menuIndicator: UIImageView!
-    @IBOutlet weak var fouthv_menuTitle: UILabel!
-    @IBOutlet weak var fouthv_menuTitlePrice: UIButton!
-   
-    
+//
+//    @IBOutlet weak var sv_menuImage: UIImageView!
+//    @IBOutlet weak var sv_menuIndicator: UIImageView!
+//    @IBOutlet weak var sv_menuTitle: UILabel!
+//    @IBOutlet weak var sv_menuTitlePrice: UIButton!
+//  
+//    
+//    @IBOutlet weak var tv_menuImage: UIImageView!
+//    @IBOutlet weak var tv_menuIndicator: UIImageView!
+//    @IBOutlet weak var tv_menuTitle: UILabel!
+//    @IBOutlet weak var tv_menuTitlePrice: UIButton!
+// 
+//    
+//    @IBOutlet weak var fouthv_menuImage: UIImageView!
+//    @IBOutlet weak var fouthv_menuIndicator: UIImageView!
+//    @IBOutlet weak var fouthv_menuTitle: UILabel!
+//    @IBOutlet weak var fouthv_menuTitlePrice: UIButton!
+//   
+//    
     @IBOutlet weak var firsView : UIView!
-    @IBOutlet weak var secondView : UIView!
-    @IBOutlet weak var thirdView : UIView!
-    @IBOutlet weak var fourthView : UIView!
+//    @IBOutlet weak var secondView : UIView!
+//    @IBOutlet weak var thirdView : UIView!
+//    @IBOutlet weak var fourthView : UIView!
     
     var arrayOfMenuItems = [NSDictionary]()
   
     var itemTapDelegate : itemTapDelegate?
     
-    func loadSpecialItem (arrayOfItems : [NSDictionary])
+    func loadSpecialItem (dicOfItem : NSDictionary)
     {
         
-        arrayOfMenuItems = arrayOfItems
-        
-        firsView.isHidden = true
-        secondView.isHidden = true
-        thirdView.isHidden = true
-        fourthView.isHidden = true
-        
-        borderforImage(imagename: fv_menuImage)
-        borderforImage(imagename: sv_menuImage)
-        borderforImage(imagename: tv_menuImage)
-        borderforImage(imagename: fouthv_menuImage)
-
+//        arrayOfMenuItems = arrayOfItems
+//        
+//        firsView.isHidden = true
+//        secondView.isHidden = true
+//        thirdView.isHidden = true
+//        fourthView.isHidden = true
+//        
+          borderforImage(imagename: fv_menuImage)
+//        borderforImage(imagename: sv_menuImage)
+//        borderforImage(imagename: tv_menuImage)
+//        borderforImage(imagename: fouthv_menuImage)
+//
         tapRecognizerView(filename: firsView)
-        tapRecognizerView(filename: secondView)
-        tapRecognizerView(filename: thirdView)
-        tapRecognizerView(filename: fourthView)
-
-        for index in 0..<arrayOfItems.count
-        {
-            
-            let subDic = arrayOfItems[index] as NSDictionary
-            
-            let name = subDic["name"] as? String
-            let price = subDic["price"] as! Int
-            let rating = subDic["rating"] as! Int
-            let menuImage = subDic["image"] as? String
-            
-            print("menuImage\(menuImage)")
-            
-            fv_menuImage.image = UIImage.init(named: "")
-            sv_menuImage.image = UIImage.init(named: "")
-            tv_menuImage.image = UIImage.init(named: "")
-            fouthv_menuImage.image = UIImage.init(named: "")
-            
-            
-            switch index {
-            case 0:
-                firsView.isHidden = false
+//        tapRecognizerView(filename: secondView)
+//        tapRecognizerView(filename: thirdView)
+//        tapRecognizerView(filename: fourthView)
+//
+//        for index in 0..<arrayOfItems.count
+//        {
+//            
+//            let subDic = arrayOfItems[index] as NSDictionary
+//
+            let name = dicOfItem["name"] as? String
+            let price = dicOfItem["price"] as! Int
+            let rating = dicOfItem["rating"] as! Int
+            let menuImage = dicOfItem["image"] as? String
+//
+//            print("menuImage\(menuImage)")
+//            
+//            fv_menuImage.image = UIImage.init(named: "")
+//            sv_menuImage.image = UIImage.init(named: "")
+//            tv_menuImage.image = UIImage.init(named: "")
+//            fouthv_menuImage.image = UIImage.init(named: "")
+//            
+//            if index == 0
+//            {
+//                firsView.isHidden = false
                 fv_menuTitle.text = name
                 fv_menuTitlePrice.setTitle("₹ \(String(price))", for: .normal)
-                
-                
+//
+//                
                 if (menuImage != nil){
+//
                     fv_menuImage.imageFromServerURL(urlString: menuImage!)
+//                    DispatchQueue.main.async(execute: {
+//                    
+//                    })
                 }
-                break
-                
-            case 1:
-                secondView.isHidden = false
-                sv_menuTitle.text = name
-                sv_menuTitlePrice.setTitle("₹ \(String(price))", for: .normal)
-                if (menuImage != nil){
-                    sv_menuImage.imageFromServerURL(urlString: menuImage!)
-                }
-                
-                break
-            case 2:
-                thirdView.isHidden = false
-                tv_menuTitle.text = name
-                tv_menuTitlePrice.setTitle("₹ \(String(price))", for: .normal)
-                if (menuImage != nil){
-                    tv_menuImage.imageFromServerURL(urlString: menuImage!)
-                }
-                break
-            case 3:
-                fourthView.isHidden = false
-                fouthv_menuTitle.text = name
-                fouthv_menuTitlePrice.setTitle("₹ \(String(price))", for: .normal)
-                if (menuImage != nil){
-                    fouthv_menuImage.imageFromServerURL(urlString: menuImage!)
-                }
-                break
-            default:
-                break
-            }
-        }
+//
+//            }else if index == 1
+//            {
+//                secondView.isHidden = false
+//                sv_menuTitle.text = name
+//                sv_menuTitlePrice.setTitle("₹ \(String(price))", for: .normal)
+//                if (menuImage != nil){
+//                    sv_menuImage.imageFromServerURL(urlString: menuImage!)
+//                }
+//            }else if index == 2
+//            {
+//                thirdView.isHidden = false
+//                tv_menuTitle.text = name
+//                tv_menuTitlePrice.setTitle("₹ \(String(price))", for: .normal)
+//                if (menuImage != nil){
+//                    tv_menuImage.imageFromServerURL(urlString: menuImage!)
+//                    
+//                }
+//            }else{
+//                fourthView.isHidden = false
+//                fouthv_menuTitle.text = name
+//                fouthv_menuTitlePrice.setTitle("₹ \(String(price))", for: .normal)
+//                if (menuImage != nil){
+//                    fouthv_menuImage.imageFromServerURL(urlString: menuImage!)
+//                }
+//            }
+//          
+//        }
         
         
     }
