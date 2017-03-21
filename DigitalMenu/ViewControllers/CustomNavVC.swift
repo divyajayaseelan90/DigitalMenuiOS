@@ -9,12 +9,17 @@
 import Foundation
 protocol customNavigationDelegate{
     func showListOfTable()
+    func showListOfOrder()
+    func showHome()
+
 }
 class CustomNavVC:UIViewController {
     
     @IBOutlet weak var logoImageView : UIImageView!
     
     var customNavigationViewDelegate : customNavigationDelegate?
+    
+    @IBOutlet weak var orderBtn : UIButton!
     
     
     override func viewDidLoad() {
@@ -49,8 +54,12 @@ class CustomNavVC:UIViewController {
     }
     
     @IBAction func showListOfTablesAction(_ sender: Any) {
-        
         customNavigationViewDelegate?.showListOfTable()
     }
-
+    @IBAction func showListOfOrderAction(_ sender: Any) {
+        customNavigationViewDelegate?.showListOfOrder()
+    }
+    @IBAction func showHomeAction(_ sender: Any) {
+        customNavigationViewDelegate?.showHome()
+    }
 }

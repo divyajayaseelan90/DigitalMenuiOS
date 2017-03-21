@@ -9,13 +9,20 @@
 import Foundation
 import UIKit
 
+protocol MenuItemDelegate {
+    func addMenuItem()
+    func animationOrder(tag : Int)
+    
+}
+
 class MenuViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate /*,UITableViewDataSource,UITableViewDelegate*/ {
     
     @IBOutlet weak var menuTableView: UITableView!
     @IBOutlet weak var restaurantScrollView: UIScrollView!
     @IBOutlet weak var bgImageView : UIImageView!
     
-    
+    var detailMenuContoller : DetailMenuViewController?
+
     var frame: CGRect = CGRect(x: 0, y: 0, width: 0, height: 0)
 
     var prevBtn : UIButton?
@@ -24,6 +31,7 @@ class MenuViewController: UIViewController,UICollectionViewDataSource,UICollecti
     var sortedArrayOfRestSpls = [NSDictionary]()
 
     var restSpl : String?
+    var menuItemDelegate : MenuItemDelegate?
     
     @IBOutlet weak var itemCollectionView: UICollectionView! {
         didSet {
@@ -205,11 +213,29 @@ class MenuViewController: UIViewController,UICollectionViewDataSource,UICollecti
 
         cell.loadSpecialItem(dicOfItem: (arrayOfRestItems?[indexPath.row])!)
         cell.itemTapDelegate = self
+        cell.addButton.addTarget(self, action:#selector(itemAddAction(button:)), for: .touchUpInside)
 
+        cell.addButton.tag = indexPath.row
+        
         return cell
 
     }
    
+   
+
+    
+    func itemAddAction(button : UIButton)
+    {
+        
+        menuItemDelegate?.animationOrder(tag: button.tag)
+        
+        let arrayOfRestItems = dicOfRestSplItems[restSpl!] as? [NSDictionary]
+        API.createMenuDic(dic: (arrayOfRestItems?[button.tag])!)
+        
+        menuItemDelegate?.addMenuItem()
+        
+        
+    }
     /*
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -264,7 +290,20 @@ extension MenuViewController : itemTapDelegate
 {
     func itemTap(detailDic: NSDictionary) {
         
+        detailMenuContoller = storyboard?.instantiateViewController(withIdentifier: "DetailItemViewSegue") as? DetailMenuViewController
+        detailMenuContoller?.detailMenuDelegate = self
+        detailMenuContoller?.detailMenuDic = detailDic
+        if let window :UIWindow = UIApplication.shared.keyWindow {
+            window.addSubview((detailMenuContoller?.view)!)}
         
     }
+
 }
+extension MenuViewController : DetaiMenuDelegate
+{
+    func removeSuperView() {
+        detailMenuContoller?.view.removeFromSuperview()
+    }
+}
+
 

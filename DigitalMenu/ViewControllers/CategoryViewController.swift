@@ -110,6 +110,9 @@ class CategoryViewController: UIViewController,UITableViewDelegate,UITableViewDa
             previousCell.categoryAction(previousCell.categoryButton)
 
         }
+        
+        
+    
         let indexPath = tableView.indexPathForSelectedRow
         let currentCell = tableView.cellForRow(at: indexPath!) as! CatergoryTableViewCell
         currentCell.categoryAction(currentCell.categoryButton)

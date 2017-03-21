@@ -15,7 +15,7 @@ enum HTTPMethod: Int {
     delete = 3
 }
 enum Segues: String {
-    case CustomNavigationSegue = "CustomNavigationSegue",CategoryViewSegue = "CategoryViewSegue",MenuCategoryViewSegue = "MenuCategoryViewSegue"
+    case CustomNavigationSegue = "CustomNavigationSegue",CategoryViewSegue = "CategoryViewSegue",MenuCategoryViewSegue = "MenuCategoryViewSegue",RestaurantSpecialSegue = "RestaurantSpecialSegue",OrderViewSegue = "OrderViewSegue"
 }
 enum PushSegues: String {
     case DetailItemViewSegue = "DetailItemViewSegue"

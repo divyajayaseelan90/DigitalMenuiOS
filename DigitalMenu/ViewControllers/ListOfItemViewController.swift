@@ -8,6 +8,12 @@
 
 import Foundation
 
+protocol CategoryMenuDelegate {
+    func addMenuItem()
+    func animationOrder(tag : Int)
+
+}
+
 class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate/*,UITableViewDelegate,UITableViewDataSource*/{
 
     var customNavigationViewController : CustomNavVC?
@@ -25,11 +31,13 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
     var arrayOfFilterType = [NSDictionary]()
     
     var TotalPage : Int = 0
-    
     var currenPage : Int = 1
     
     
     var isFilter : Bool = false
+    var categoryMenuDelegate : CategoryMenuDelegate?
+    
+    var prevBtn : UIButton?
     
     @IBOutlet weak var leftArrowBtn : UIButton!
     @IBOutlet weak var rightArrowBtn : UIButton!
@@ -56,11 +64,11 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
         transition.subtype = kCATransitionFromTop
         self.view.layer.add(transition, forKey: "animation")
         
-        menuCategoryTableView.register(UINib(nibName: CategoryMenuTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: CategoryMenuTableViewCell.identifier)
-
         
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        print("isFilter \(isFilter)")
         if !dicOfCategoryItems.isEmpty && !isFilter{
             
             let arrayOfMenuItems = dicOfCategoryItems[catType!] as? [NSDictionary]
@@ -92,57 +100,35 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
         }
        
         cell.loadSpecialItem(dicOfItem: (arrayOfRestItems[indexPath.row]))
+        cell.itemTapDelegate = self
+        cell.addButton.addTarget(self, action:#selector(itemAddAction(button:)), for: .touchUpInside)
+        
+        cell.addButton.tag = indexPath.row
+        
+        let square = UIView()
+        square.frame = CGRect(x: 10, y: 10, width: 64, height: 64)
+        square.backgroundColor = UIColor.red
+        cell.superview?.addSubview(square)
+        
         
         return cell
         
     }
-
-    /*
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 160
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
-        if !dicOfCategoryItems.isEmpty {
-            
-            let arrayOfMenuItems = dicOfCategoryItems[catType!] as? [NSDictionary]
-            var totalCount = arrayOfMenuItems?.count
-            
-            let modulesOfCount  = totalCount! % 4
-            
-            if (modulesOfCount == 0)
-            {
-                totalCount = totalCount!/4
-                
-            }else{
-                totalCount = (totalCount!/4)+1
-                
-            }
-            return (totalCount)!
-        }
-        return 0
+    func itemAddAction(button : UIButton)
+    {
         
-    }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
         
-        var cell : CategoryMenuTableViewCell
-        cell = tableView.dequeueReusableCell(withIdentifier: CategoryMenuTableViewCell.identifier) as! CategoryMenuTableViewCell
-        cell.backgroundColor = UIColor.clear
-        cell.selectionStyle = UITableViewCellSelectionStyle.none
-        cell.itemTapDelegate = self
+        categoryMenuDelegate?.animationOrder(tag: button.tag)
 
         let arrayOfRestItems = dicOfCategoryItems[catType!] as? [NSDictionary]
-        cell.loadSpecialItem(arrayOfItems: arrayOfRestItems!)
-        return cell
+        API.createMenuDic(dic: (arrayOfRestItems?[button.tag])!)
+        
+        categoryMenuDelegate?.addMenuItem()
         
         
     }
-    */
+    
     func loadMenuItemsByCategory(type: String)
     {
         
@@ -264,16 +250,10 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
             let pageView = UIView(frame: CGRect(x: 667 * CGFloat(pageIndex), y: 0, width: 667, height: self.filterScrollView.frame.size.height))
             
           
-            var subCount : Int = 4
-            
-            if arrayOfFilterType.count < 4
-            {
-                subCount = arrayOfFilterType.count
-            }
-            
-            for index in 0..<subCount{
+            for index in 0..<4{
                 
-                
+                if indexOfPage < arrayOfFilterType.count
+                {
             self.frame.origin.x = 134 * CGFloat(index) + (26.25 * CGFloat(index+1))
             self.frame.size.width = 134
             self.frame.size.height = 24
@@ -284,11 +264,10 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
             subView.backgroundColor = UIColor.clear
             
             let button = UIButton(frame: CGRect(x: self.frame.origin.x, y:self.frame.origin.y, width: self.frame.size.width, height: self.frame.size.height))
-            button.setImage(UIImage.init(named: "Filter bg"), for: UIControlState.selected)
+            button.setImage(UIImage.init(named: "Filter bg_active"), for: UIControlState.selected)
             button.setImage(UIImage.init(named: "Filter bg"), for: UIControlState.normal)
             button.addTarget(self, action: #selector(filterAction(button:)), for: .touchUpInside)
             button.tag = index
-            
             pageView.addSubview(button)
             
             let dic = arrayOfFilterType[indexOfPage]
@@ -306,6 +285,7 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
             pageView.addSubview(titleLabel)
                 
             indexOfPage += 1
+                }
 
             }
             self.filterScrollView.addSubview(pageView)
@@ -320,8 +300,32 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
 
     func filterAction(button : UIButton)
     {
+       
+        if prevBtn != nil && prevBtn != button
+        {
+            if (prevBtn?.isSelected)!{
+                prevBtn?.isSelected = false
+            }
+            if let theLabel = self.filterScrollView.viewWithTag(100*((prevBtn?.tag)!+1)) as? UILabel {
+                theLabel.textColor = UIColor.white
+            }
+        }
+        if button.isSelected{
+            button.isSelected = false
+            isFilter = false
+            if let theLabel = self.filterScrollView.viewWithTag(100*((button.tag)+1)) as? UILabel {
+                theLabel.textColor = UIColor.white
+            }
+
+        }else{
+            
+            button.isSelected = true
+            isFilter = true
+            if let theLabel = self.filterScrollView.viewWithTag(100*((button.tag)+1)) as? UILabel {
+                theLabel.textColor = UIColor.DigitalMenu.AppColor
+            }
+        }
         
-        isFilter = true
         
         print("dic of filter\(arrayOfFilterType[button.tag])")
         
@@ -352,6 +356,8 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
         }
         dicOfFilterItems[catType!] = subArrayOfFilterItems as AnyObject?
         itemCollectionView.reloadData()
+        
+        prevBtn = button
     }
 
     func updatePageValue()
@@ -373,6 +379,11 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
                 rightArrowBtn.isHidden = false
             }
             
+        }else if currenPage == TotalPage
+        {
+            leftArrowBtn.isHidden = true
+            rightArrowBtn.isHidden = true
+
         }else  if self.currenPage >= self.TotalPage{
             
             leftArrowBtn.isHidden = false

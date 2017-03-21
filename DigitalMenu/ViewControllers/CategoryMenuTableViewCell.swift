@@ -31,114 +31,110 @@ class CategoryMenuTableViewCell: UICollectionViewCell {
     @IBOutlet weak var fv_menuTitle: UILabel!
     @IBOutlet weak var fv_menuTitlePrice: UIButton!
    
-//
-//    @IBOutlet weak var sv_menuImage: UIImageView!
-//    @IBOutlet weak var sv_menuIndicator: UIImageView!
-//    @IBOutlet weak var sv_menuTitle: UILabel!
-//    @IBOutlet weak var sv_menuTitlePrice: UIButton!
-//  
-//    
-//    @IBOutlet weak var tv_menuImage: UIImageView!
-//    @IBOutlet weak var tv_menuIndicator: UIImageView!
-//    @IBOutlet weak var tv_menuTitle: UILabel!
-//    @IBOutlet weak var tv_menuTitlePrice: UIButton!
-// 
-//    
-//    @IBOutlet weak var fouthv_menuImage: UIImageView!
-//    @IBOutlet weak var fouthv_menuIndicator: UIImageView!
-//    @IBOutlet weak var fouthv_menuTitle: UILabel!
-//    @IBOutlet weak var fouthv_menuTitlePrice: UIButton!
-//   
-//    
+   
     @IBOutlet weak var firsView : UIView!
-//    @IBOutlet weak var secondView : UIView!
-//    @IBOutlet weak var thirdView : UIView!
-//    @IBOutlet weak var fourthView : UIView!
-    
-    var arrayOfMenuItems = [NSDictionary]()
+ 
+    @IBOutlet weak var addButton : UIButton!
+
+    @IBOutlet weak var spicy1 : UIImageView!
+    @IBOutlet weak var spicy2 : UIImageView!
+    @IBOutlet weak var spicy3 : UIImageView!
+    @IBOutlet weak var spicy4 : UIImageView!
+    @IBOutlet weak var spicy5 : UIImageView!
+
+    var detailDic : NSDictionary!
   
     var itemTapDelegate : itemTapDelegate?
     
     func loadSpecialItem (dicOfItem : NSDictionary)
     {
         
-//        arrayOfMenuItems = arrayOfItems
-//        
-//        firsView.isHidden = true
-//        secondView.isHidden = true
-//        thirdView.isHidden = true
-//        fourthView.isHidden = true
-//        
+        spicy1.isHidden = true
+        spicy2.isHidden = true
+        spicy3.isHidden = true
+        spicy4.isHidden = true
+        spicy5.isHidden = true
+        
+        detailDic = dicOfItem
+        
           borderforImage(imagename: fv_menuImage)
-//        borderforImage(imagename: sv_menuImage)
-//        borderforImage(imagename: tv_menuImage)
-//        borderforImage(imagename: fouthv_menuImage)
-//
-        tapRecognizerView(filename: firsView)
-//        tapRecognizerView(filename: secondView)
-//        tapRecognizerView(filename: thirdView)
-//        tapRecognizerView(filename: fourthView)
-//
-//        for index in 0..<arrayOfItems.count
-//        {
-//            
-//            let subDic = arrayOfItems[index] as NSDictionary
-//
+
+          tapRecognizerView(filename: firsView)
+
             let name = dicOfItem["name"] as? String
             let price = dicOfItem["price"] as! Int
             let rating = dicOfItem["rating"] as! Int
             let menuImage = dicOfItem["image"] as? String
-//
-//            print("menuImage\(menuImage)")
-//            
-//            fv_menuImage.image = UIImage.init(named: "")
-//            sv_menuImage.image = UIImage.init(named: "")
-//            tv_menuImage.image = UIImage.init(named: "")
-//            fouthv_menuImage.image = UIImage.init(named: "")
-//            
-//            if index == 0
-//            {
-//                firsView.isHidden = false
-                fv_menuTitle.text = name
+            fv_menuTitle.text = name
                 fv_menuTitlePrice.setTitle("₹ \(String(price))", for: .normal)
-//
-//                
-                if (menuImage != nil){
-//
+              if (menuImage != nil){
+
                     fv_menuImage.imageFromServerURL(urlString: menuImage!)
-//                    DispatchQueue.main.async(execute: {
-//                    
-//                    })
+
                 }
-//
-//            }else if index == 1
-//            {
-//                secondView.isHidden = false
-//                sv_menuTitle.text = name
-//                sv_menuTitlePrice.setTitle("₹ \(String(price))", for: .normal)
-//                if (menuImage != nil){
-//                    sv_menuImage.imageFromServerURL(urlString: menuImage!)
-//                }
-//            }else if index == 2
-//            {
-//                thirdView.isHidden = false
-//                tv_menuTitle.text = name
-//                tv_menuTitlePrice.setTitle("₹ \(String(price))", for: .normal)
-//                if (menuImage != nil){
-//                    tv_menuImage.imageFromServerURL(urlString: menuImage!)
-//                    
-//                }
-//            }else{
-//                fourthView.isHidden = false
-//                fouthv_menuTitle.text = name
-//                fouthv_menuTitlePrice.setTitle("₹ \(String(price))", for: .normal)
-//                if (menuImage != nil){
-//                    fouthv_menuImage.imageFromServerURL(urlString: menuImage!)
-//                }
-//            }
-//          
-//        }
+        if let filterArray = detailDic["filter"] as? NSArray
+        {
+            
+            for index in 0..<filterArray.count
+            {
+                let subDic = filterArray[index] as! NSDictionary
+                let orderNumber = subDic["orderNumber"] as? Int
+
+                if orderNumber == 1
+                {
+                    fv_menuIndicator.image = UIImage.init(named: "veg indicator")
+                }
+            }
+        }
         
+        
+        if let menuQualifierArray = detailDic["menuQualifiers"] as? NSArray
+        {
+            
+            let subMenuQualifier = menuQualifierArray[0] as! NSDictionary
+            
+            let orderNumber = subMenuQualifier["orderNumber"] as? Int
+            
+            if orderNumber == 1
+            {
+                spicy1.isHidden = false
+                spicy2.isHidden = true
+                spicy3.isHidden = true
+                spicy4.isHidden = true
+                spicy5.isHidden = true
+
+            }else if orderNumber == 2
+            {
+                spicy1.isHidden = false
+                spicy2.isHidden = false
+                spicy3.isHidden = true
+                spicy4.isHidden = true
+                spicy5.isHidden = true
+            }
+            else if orderNumber == 3
+            {
+                spicy1.isHidden = false
+                spicy2.isHidden = false
+                spicy3.isHidden = false
+                spicy4.isHidden = true
+                spicy5.isHidden = true
+            }
+            else if orderNumber == 4
+            {
+                spicy1.isHidden = false
+                spicy2.isHidden = false
+                spicy3.isHidden = false
+                spicy4.isHidden = false
+                spicy5.isHidden = true
+            }else{
+                spicy1.isHidden = false
+                spicy2.isHidden = false
+                spicy3.isHidden = false
+                spicy4.isHidden = false
+                spicy5.isHidden = false
+
+            }
+        }
         
     }
     
@@ -156,17 +152,12 @@ class CategoryMenuTableViewCell: UICollectionViewCell {
     {
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(selectedItem(sender:)))
-        
         filename.addGestureRecognizer(tap)
     }
     
     
     func selectedItem(sender: UITapGestureRecognizer? = nil) {
-        if let view = sender?.view {
-            
-           itemTapDelegate?.itemTap(detailDic: arrayOfMenuItems[view.tag])
-
-        }
+        itemTapDelegate?.itemTap(detailDic: detailDic)
         
     }
     

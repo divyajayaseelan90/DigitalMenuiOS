@@ -21,7 +21,7 @@ class SplashViewController: UIViewController {
         self.logoImageView.addSubview(activityIndicator)
         
         API.syncRestaurantConfig(completionClosure: {(imageURL) -> () in
-        
+            self.activityIndicator.stopAnimating()
             print("imageURL \(imageURL)")
             if imageURL.characters.count != 0  {
                 self.logoImageView.imageFromServerURL(urlString: imageURL)
@@ -32,12 +32,16 @@ class SplashViewController: UIViewController {
                 self.logoImageView.layer.borderWidth = 1
                 self.logoImageView.layer.borderColor = UIColor.clear.cgColor
             }
+            API.getTaxes(completionClosure: { _ in
             
-            self.activityIndicator.stopAnimating()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                self.loadMainView()
-            })
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                    self.loadMainView()
+                })
 
+            })
+            
+            
+           
         })
         
         
