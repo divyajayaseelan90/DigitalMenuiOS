@@ -104,20 +104,13 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
         cell.addButton.addTarget(self, action:#selector(itemAddAction(button:)), for: .touchUpInside)
         
         cell.addButton.tag = indexPath.row
-        
-        let square = UIView()
-        square.frame = CGRect(x: 10, y: 10, width: 64, height: 64)
-        square.backgroundColor = UIColor.red
-        cell.superview?.addSubview(square)
-        
+        cell.animationLabel.tag = 100*(indexPath.row + 1)
         
         return cell
         
     }
     func itemAddAction(button : UIButton)
     {
-        
-    
         
         categoryMenuDelegate?.animationOrder(tag: button.tag)
 
@@ -267,7 +260,7 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
             button.setImage(UIImage.init(named: "Filter bg_active"), for: UIControlState.selected)
             button.setImage(UIImage.init(named: "Filter bg"), for: UIControlState.normal)
             button.addTarget(self, action: #selector(filterAction(button:)), for: .touchUpInside)
-            button.tag = index
+            button.tag = indexOfPage
             pageView.addSubview(button)
             
             let dic = arrayOfFilterType[indexOfPage]
@@ -280,7 +273,7 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
             titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
             titleLabel.textAlignment = NSTextAlignment.center
             titleLabel.textColor = UIColor.white
-            titleLabel.tag = (100*(index+1))
+            titleLabel.tag = (100*(indexOfPage+1))
             
             pageView.addSubview(titleLabel)
                 
@@ -441,5 +434,9 @@ extension ListOfItemViewController : DetaiMenuDelegate
 {
     func removeSuperView() {
         detailMenuContoller?.view.removeFromSuperview()
+    }
+    func DetailMenuAddAction() {
+        self.categoryMenuDelegate?.addMenuItem()
+        
     }
 }

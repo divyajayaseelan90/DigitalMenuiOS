@@ -81,6 +81,20 @@
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                 <state key="normal" title="Add" backgroundImage="Item"/>
                             </button>
+                            <view hidden="YES" tag="1000" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Afi-UH-tVx">
+                                <rect key="frame" x="48" y="35" width="64" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="+1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WH8-bm-9ZZ">
+                                        <rect key="frame" x="0.0" y="0.0" width="64" height="48"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
+                                        <color key="textColor" red="0.78039215689999997" green="0.30980392159999998" blue="0.019607843140000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
@@ -88,6 +102,7 @@
             </view>
             <connections>
                 <outlet property="addButton" destination="iFJ-IJ-Ly2" id="cpX-PE-XsI"/>
+                <outlet property="animationLabel" destination="Afi-UH-tVx" id="oGe-Sz-Sz1"/>
                 <outlet property="firsView" destination="Sde-RV-wUo" id="Rjl-vD-RjR"/>
                 <outlet property="fv_menuImage" destination="6xy-F8-tlU" id="ycM-gp-4yi"/>
                 <outlet property="fv_menuIndicator" destination="NiD-cm-AGy" id="nsr-sz-94O"/>

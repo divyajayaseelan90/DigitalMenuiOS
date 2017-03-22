@@ -120,6 +120,9 @@ class MenuViewController: UIViewController,UICollectionViewDataSource,UICollecti
             bgImageView.isHidden = false
 
             let dic = sortedArrayOfRestSpls[index]
+            
+            print("dic\(dic)")
+            
             self.frame.origin.x = 185 * CGFloat(index)
             self.frame.size.width = 185
             self.frame.size.height = 33
@@ -303,6 +306,11 @@ extension MenuViewController : DetaiMenuDelegate
 {
     func removeSuperView() {
         detailMenuContoller?.view.removeFromSuperview()
+    }
+    
+    func DetailMenuAddAction() {
+        menuItemDelegate?.addMenuItem()
+
     }
 }
 

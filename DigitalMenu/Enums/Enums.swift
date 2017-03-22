@@ -15,7 +15,7 @@ enum HTTPMethod: Int {
     delete = 3
 }
 enum Segues: String {
-    case CustomNavigationSegue = "CustomNavigationSegue",CategoryViewSegue = "CategoryViewSegue",MenuCategoryViewSegue = "MenuCategoryViewSegue",RestaurantSpecialSegue = "RestaurantSpecialSegue",OrderViewSegue = "OrderViewSegue"
+    case CustomNavigationSegue = "CustomNavigationSegue",CategoryViewSegue = "CategoryViewSegue",MenuCategoryViewSegue = "MenuCategoryViewSegue",RestaurantSpecialSegue = "RestaurantSpecialSegue",OrderViewSegue = "OrderViewSegue",AdminSegue = "AdminSegue"
 }
 enum PushSegues: String {
     case DetailItemViewSegue = "DetailItemViewSegue"
@@ -25,10 +25,12 @@ enum AlertMessage: String
 {
     case success = "Success",failure = "Error"
 }
+
 enum DefaultText : String
 {
-    case restaurantDesc = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    case textEmpty = "Please Enter the pin",placeHolderText = "Write here..." ,restaurantDesc = ""
 }
+
 
 extension UIImageView {
     public func imageFromServerURL(urlString: String) {

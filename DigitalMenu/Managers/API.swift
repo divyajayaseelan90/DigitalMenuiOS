@@ -8,13 +8,14 @@
 
 import Foundation
 import UIKit
-public let baseHttpUrl = "https://digitalapi.dobango.com/api/"//"http://52.220.104.17:8080/redchilli/api/"
+public let baseHttpUrl = "http://52.220.104.17:8080/redchilli/api/"//"https://digitalapi.dobango.com/api/"//"http://52.220.104.17:8080/redchilli/api/"
 
 class URLPath {
     static let getTableMenuItems : String = "tablet/getTabletMenuItems"
     static let getRestaurantConfig : String = "tablet/getFeedbackConfig"
     static let getTablenumber : String = "tablet/getTableNumbers"
     static let getTax : String = "tablet/getTaxes"
+    static let validatePin : String = "tablet/validatePin"
 
 }
 
@@ -22,10 +23,12 @@ class API : NSObject
 {
     struct Static
     {
+        
         static var isReachable : Bool = false
         static var createMenuOrder : CreateMenuOrder?
         static var arrayOfItemDic = [NSDictionary]()
         static var totalItemCount : Int = 0
+
         static var serviceTax : Float = 0
         static var serviceCharge : Float = 0
         static var laxuryTax : Float = 0
@@ -37,11 +40,11 @@ class API : NSObject
         
             SVProgressHUD.show()
         
-            let customerHeaders  = ["restaurantid": "53","pin": "537430"]
-            
+            let customerHeaders  = ["restaurantid": self.valueOfUserDefaults(defaultsname: DigitalMenu.Userdefaults.RestaurantId),"pin": self.valueOfUserDefaults(defaultsname: DigitalMenu.Userdefaults.Pin)]
+        
             print("parameters \(customerHeaders)")
             
-            NetworkingManager.request(httpmethod: HTTPMethod.get, currentHttpPath:URLPath.getTableMenuItems, customHeaders: customerHeaders , completionClosure: {(message, response,displayMessage) -> () in
+            NetworkingManager.request(httpmethod: HTTPMethod.get, currentHttpPath:URLPath.getTableMenuItems, customHeaders: customerHeaders as! [String : String] , completionClosure: {(message, response,displayMessage) -> () in
                 
                 print("response of getTableNumbers \(response)")
                 
@@ -59,14 +62,54 @@ class API : NSObject
                 
             })
         }
+    class func getTableNumbers (completionClosure : @escaping (_ tablenumberArray : NSArray,_ displayMessage : String) -> ()) {
+//        if API.Static.isReachable{
+        
+            SVProgressHUD.show()
+            
+            let customerHeaders  = ["restaurantid": self.valueOfUserDefaults(defaultsname: DigitalMenu.Userdefaults.RestaurantId),"pin": self.valueOfUserDefaults(defaultsname: DigitalMenu.Userdefaults.Pin)]
+            
+            print("parameters \(customerHeaders)")
+            
+            NetworkingManager.request(httpmethod: HTTPMethod.get, currentHttpPath:URLPath.getTablenumber, customHeaders: customerHeaders as! [String : String], completionClosure: {(message, response,displayMessage) -> () in
+                
+                
+                print("response of getTableNumbers \(response)")
+                
+                UserDefaults.standard.setValue(nil, forKey: DigitalMenu.Userdefaults.FeedbackAppTableNumberArray)
+                
+                if message == AlertMessage.success.rawValue
+                {
+                    let responseArray = response?["data"]  as! NSArray
+                    
+                    UserDefaults.standard.setValue(responseArray, forKey: DigitalMenu.Userdefaults.FeedbackAppTableNumberArray)
+                    completionClosure(responseArray as NSArray,displayMessage!)
+                    
+                }else{
+                    SVProgressHUD.dismiss()
+                    completionClosure(NSArray(),displayMessage!)
+                    
+                }
+                
+            })
+//        }
+        
+        //else{
+//            if (UserDefaults.standard.array(forKey: Feedback.Userdefaults.FeedbackAppTableNumberArray) != nil){
+//                completionClosure((UserDefaults.standard.array(forKey: Feedback.Userdefaults.FeedbackAppTableNumberArray) as NSArray?)!,"")
+//            }
+//            
+//        }
+    }
+
     class func getTaxes (completionClosure : @escaping (_ displayMessage : String) -> ()) {
         
         
-        let customerHeaders  = ["restaurantid": "53","pin": "537430"]
+        let customerHeaders  = ["restaurantid": self.valueOfUserDefaults(defaultsname: DigitalMenu.Userdefaults.RestaurantId),"pin": self.valueOfUserDefaults(defaultsname: DigitalMenu.Userdefaults.Pin)]
         
         print("parameters \(customerHeaders)")
         
-        NetworkingManager.request(httpmethod: HTTPMethod.get, currentHttpPath:URLPath.getTax, customHeaders: customerHeaders , completionClosure: {(message, response,displayMessage) -> () in
+        NetworkingManager.request(httpmethod: HTTPMethod.get, currentHttpPath:URLPath.getTax, customHeaders: customerHeaders as! [String : String] , completionClosure: {(message, response,displayMessage) -> () in
             
             print("response of getTax \(response)")
             
@@ -106,20 +149,38 @@ class API : NSObject
                 completionClosure(displayMessage!)
                 
             }
+            completionClosure(displayMessage!)
+
+        })
+    }
+    class func validatePin (restPin : String?,completionClosure:@escaping (_ message: String?, _ response: AnyObject?,_ displayMessage : String?) -> ()) {
+        
+        let customerHeader  = ["pin": restPin]
+        
+        NetworkingManager.request(httpmethod: HTTPMethod.post, currentHttpPath:URLPath.validatePin, customHeaders: customerHeader as! [String : String], completionClosure: {(message, response,displayMessage) -> () in
+            
+            completionClosure(message, response,displayMessage)
+            
             
         })
     }
+    class func showAlert(_ title: String, message: String) {
+        
+        let alert: UIAlertView = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: "OK")
+        alert.show()
+    }
+
     class func syncRestaurantConfig (completionClosure : @escaping (_ imageURL : String) -> ()) {
         
 //        if API.Static.isReachable{
             SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.gradient)
             SVProgressHUD.show()
             
-            let customerHeaders  = ["restaurantid": "53","pin": "537430"]
-            
+        let customerHeaders  = ["restaurantid": self.valueOfUserDefaults(defaultsname: DigitalMenu.Userdefaults.RestaurantId),"pin": self.valueOfUserDefaults(defaultsname: DigitalMenu.Userdefaults.Pin)]
+        
             print("parameters \(customerHeaders)")
             
-            NetworkingManager.request(httpmethod: HTTPMethod.get, currentHttpPath:URLPath.getRestaurantConfig, customHeaders: customerHeaders , completionClosure: {(message, response,displayMessage) -> () in
+            NetworkingManager.request(httpmethod: HTTPMethod.get, currentHttpPath:URLPath.getRestaurantConfig, customHeaders: customerHeaders as! [String : String] , completionClosure: {(message, response,displayMessage) -> () in
                 
                 
                 print("response of config feedback \(response)")

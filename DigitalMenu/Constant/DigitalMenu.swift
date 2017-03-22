@@ -12,6 +12,12 @@ class DigitalMenu {
 
     class Userdefaults
     {
+        static let RestaurantId : String = "RestaurantId"
+        static let Pin : String = "Pin"
+        static let Tablenumber : String = "Tablenumber"
+        
+        static let FeedbackAppTableNumberArray : String = "FeedbackAppTableNumberArray"
+
         static let TableMenuItem : String = "tableMenuItem"
         static let RestaurantAppDescription : String = "RestaurantAppDescription"
         static let RestaurantApppLogo: String = "RestaurantApppLogo"
@@ -20,9 +26,12 @@ class DigitalMenu {
     class LocalNotification
     {
         static let refreshMenu : String = "refreshMenu"
+        static let name : String = "Restaurant_Submit"
+        static let TableNumberSubmit : String = "TableNumber_Submit"
 
     }
     
+
     class storyBoardIdentifier
     {
         static let mainView : String = "MainView"

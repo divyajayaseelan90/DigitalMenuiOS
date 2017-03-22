@@ -18,15 +18,19 @@ class CusineViewController: UIViewController {
     weak var categoryViewController: CategoryViewController?
     weak var menuItemViewController: MenuViewController?
     weak var orderViewController: OrderViewController?
+    weak var adminViewController: AdminViewController?
+    
+    
 
     @IBOutlet weak var ListOfItemContainerView : UIView!
     @IBOutlet weak var welcomeContainerView : UIView!
     @IBOutlet weak var splContainerView : UIView!
     @IBOutlet weak var orderContainerView : UIView!
+    @IBOutlet weak var adminContainerView : UIView!
 
     enum viewType : String
     {
-        case homeView = "HomeView", categoryView = "CategoryView", orderView = "OrderView"
+        case homeView = "HomeView", categoryView = "CategoryView", orderView = "OrderView", adminView = "AdminView"
     }
 
     
@@ -34,13 +38,26 @@ class CusineViewController: UIViewController {
         
         super.viewDidLoad()
 
-        containerView(type: viewType.homeView.rawValue)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(CusineViewController.methodOfReceivedNotification), name:NSNotification.Name(rawValue: DigitalMenu.LocalNotification.name), object: nil)
+
+        if UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantId) != nil
+        {
+            containerView(type: viewType.homeView.rawValue)
+            API.getTableMenuItems(completionClosure:{_ in ()
+                
+            })
+        }else{
+            
+            containerView(type: viewType.adminView.rawValue)
+
+            
+        }
+    }
+    func methodOfReceivedNotification(notification: Notification){
         API.getTableMenuItems(completionClosure:{_ in ()
             
         })
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -68,10 +85,15 @@ class CusineViewController: UIViewController {
         }
         else if segue.identifier == Segues.OrderViewSegue.rawValue {
             self.orderViewController = segue.destination as? OrderViewController
-//            if let viewController = orderViewController {
-//                viewController.menuItemDelegate = self
-//            }
+
         }
+        else if segue.identifier == Segues.AdminSegue.rawValue {
+            self.adminViewController = segue.destination as? AdminViewController
+            if let viewController = adminViewController {
+                viewController.delegate = self
+            }
+        }
+
         else if segue.identifier == Segues.CategoryViewSegue.rawValue {
             self.categoryViewController = segue.destination as? CategoryViewController
             if let viewController = categoryViewController {
@@ -87,18 +109,28 @@ class CusineViewController: UIViewController {
             splContainerView.isHidden = true
             ListOfItemContainerView.isHidden = false
             orderContainerView.isHidden = true
+            adminContainerView.isHidden = true
 
         }else if type == viewType.homeView.rawValue{
             welcomeContainerView.isHidden = false
             splContainerView.isHidden = false
             ListOfItemContainerView.isHidden = true
             orderContainerView.isHidden = true
+            adminContainerView.isHidden = true
 
+        }else if type == viewType.adminView.rawValue
+        {
+            welcomeContainerView.isHidden = false
+            splContainerView.isHidden = false
+            ListOfItemContainerView.isHidden = true
+            orderContainerView.isHidden = true
+            adminContainerView.isHidden = false
         }else{
             welcomeContainerView.isHidden = true
             splContainerView.isHidden = true
             ListOfItemContainerView.isHidden = true
             orderContainerView.isHidden = false
+            adminContainerView.isHidden = true
 
         }
     }
@@ -106,48 +138,27 @@ class CusineViewController: UIViewController {
 extension CusineViewController: CategoryMenuDelegate,MenuItemDelegate {
     
     func animationOrder(tag: Int) {
-        
         /*
+        
+        if let animatieView = self.listOfItemViewController?.itemCollectionView.viewWithTag(100*(tag + 1))
+        {
+            
+            animatieView.isHidden = false
+            
         print("cell tag\(tag + 1)")
         
-        var originX : Int = 350
-        if tag == 1
-        {
-            originX = 510
-        }else if tag == 2
-        {
-            originX = 690
-        }
-        else if tag == 3
-        {
-            originX = 870
+        let originX : Int = Int(animatieView.frame.origin.x)
+        let originY : Int = Int(animatieView.frame.origin.y)
+
             
-        }
-        let square = UIView()
-        square.frame = CGRect(x: originX, y: 250, width: 64, height: 64)
-        square.backgroundColor = UIColor.red
-        
-        // add the square to the screen
-        self.view.addSubview(square)
-        
-        let titleLabel = UILabel(frame: CGRect(x:  0, y:0, width: 64, height: 64))
-        titleLabel.backgroundColor = UIColor.clear
-        titleLabel.text = "+1"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 35)
-        titleLabel.textAlignment = NSTextAlignment.center
-        titleLabel.textColor = UIColor.DigitalMenu.AppColor
-        square.addSubview(titleLabel)
-        square.tag = 1000
-        
-        
         // now create a bezier path that defines our curve
         // the animation function needs the curve defined as a CGPath
         // but these are more difficult to work with, so instead
         // we'll create a UIBezierPath, and then create a
         // CGPath from the bezier when we need it
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: originX,y: 250))
-        path.addCurve(to: CGPoint(x: 1024, y: 34), controlPoint1: CGPoint(x: 650, y: 200), controlPoint2: CGPoint(x: 850, y:150))
+        path.move(to: CGPoint(x: originX+30, y: originY+30))
+        path.addCurve(to: CGPoint(x: 1020, y: 230), controlPoint1: CGPoint(x: 600, y: 90), controlPoint2: CGPoint(x: 850, y:210))
         
         // create a new CAKeyframeAnimation that animates the objects position
         let anim = CAKeyframeAnimation(keyPath: "position")
@@ -161,22 +172,34 @@ extension CusineViewController: CategoryMenuDelegate,MenuItemDelegate {
         anim.duration = 1.5
         
         // we add the animation to the squares 'layer' property
-        square.layer.add(anim, forKey: "animate position along path")
+        animatieView.layer.add(anim, forKey: "animate position along path")
+        }
         */
     }
     func addMenuItem() {
     
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
-//            
-//            self.customNavigationViewController?.orderBtn.setTitle(String(API.Static.totalItemCount), for: .normal)
-//            
-//           
-//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+        
+            self.customNavigationViewController?.orderBtn.setTitle(String(API.Static.totalItemCount), for: .normal)
+            let slideInFromLeftTransition = CATransition()
+            // Customize the animation's properties
+            slideInFromLeftTransition.type = kCATransitionMoveIn
+            slideInFromLeftTransition.subtype =   kCATransitionFromTop
+            slideInFromLeftTransition.duration = 0.5
+            slideInFromLeftTransition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
+            slideInFromLeftTransition.fillMode = kCAFillModeRemoved
+            
+            
+            // Add the animation to the View's layer
+            self.customNavigationViewController?.orderBtn.layer.add(slideInFromLeftTransition, forKey: "slideInFromLeftTransition")
+
+           
+
 //        })
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2, execute: {
 //
-//            if let theView = self.view.viewWithTag(1000) {
-//                theView.removeFromSuperview()
+//            if let theView = self.view.viewWithTag(100*(tag + 1)) {
+//                theView.isHidden = true
 //            }
 //        })
     }
@@ -187,7 +210,8 @@ extension CusineViewController: customNavigationDelegate {
     
     func  showListOfTable() {
         
-        
+        containerView(type: viewType.adminView.rawValue)
+        self.adminViewController?.viewType(type: "Pin")
     }
 
     func showListOfOrder() {
@@ -205,6 +229,24 @@ extension CusineViewController: customNavigationDelegate {
 
     }
 }
+
+extension CusineViewController: AdminDelegate
+{
+    internal func submitPin() {
+        
+    }
+
+    func closeAdminPage() {
+        
+        self.showHome()
+        if UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.Tablenumber)?.characters.count != 0 && UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.Tablenumber) != nil
+        {
+            
+            self.customNavigationViewController?.tableBtn.setTitle((UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.Tablenumber)), for: .normal)
+        }
+    }
+}
+
 extension CusineViewController: categorySelectionDelegate {
     
     func selectedCategory(type : String) {

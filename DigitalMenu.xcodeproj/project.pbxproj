@@ -36,6 +36,8 @@
 		48F5C48D1E8009AC005907D1 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F5C48C1E8009AC005907D1 /* OrderViewController.swift */; };
 		48F5C48F1E810578005907D1 /* OrderListingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48F5C48E1E810578005907D1 /* OrderListingTableViewCell.xib */; };
 		48F5C4911E810587005907D1 /* OrderListingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F5C4901E810587005907D1 /* OrderListingTableViewCell.swift */; };
+		48F5C4931E824455005907D1 /* AdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F5C4921E824455005907D1 /* AdminViewController.swift */; };
+		48F5C4991E8264FC005907D1 /* TableNumberCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F5C4981E8264FC005907D1 /* TableNumberCollectionCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +77,8 @@
 		48F5C48C1E8009AC005907D1 /* OrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		48F5C48E1E810578005907D1 /* OrderListingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrderListingTableViewCell.xib; sourceTree = "<group>"; };
 		48F5C4901E810587005907D1 /* OrderListingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderListingTableViewCell.swift; sourceTree = "<group>"; };
+		48F5C4921E824455005907D1 /* AdminViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminViewController.swift; sourceTree = "<group>"; };
+		48F5C4981E8264FC005907D1 /* TableNumberCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableNumberCollectionCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +153,8 @@
 				48F5C48C1E8009AC005907D1 /* OrderViewController.swift */,
 				48F5C48E1E810578005907D1 /* OrderListingTableViewCell.xib */,
 				48F5C4901E810587005907D1 /* OrderListingTableViewCell.swift */,
+				48F5C4921E824455005907D1 /* AdminViewController.swift */,
+				48F5C4981E8264FC005907D1 /* TableNumberCollectionCell.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -286,11 +292,13 @@
 				48570D851E6E92BB00142359 /* SVIndefiniteAnimatedView.m in Sources */,
 				48F5C48B1E7FC6F1005907D1 /* CreateMenuOrder.swift in Sources */,
 				48570D8C1E6EBDD800142359 /* CategoryViewController.swift in Sources */,
+				48F5C4991E8264FC005907D1 /* TableNumberCollectionCell.swift in Sources */,
 				48570D791E6E8DA500142359 /* MenuViewController.swift in Sources */,
 				48570D961E717B7D00142359 /* WelcomeViewController.swift in Sources */,
 				48F5C4911E810587005907D1 /* OrderListingTableViewCell.swift in Sources */,
 				48570D871E6E92BB00142359 /* SVProgressHUD.m in Sources */,
 				48570D771E6E8D8A00142359 /* NetworkingManager.swift in Sources */,
+				48F5C4931E824455005907D1 /* AdminViewController.swift in Sources */,
 				48570D5A1E6E837C00142359 /* AppDelegate.swift in Sources */,
 				487AF3331E7DA9F30099F4CF /* DetailMenuViewController.swift in Sources */,
 				48570D941E6EC59D00142359 /* CatergoryTableViewCell.swift in Sources */,

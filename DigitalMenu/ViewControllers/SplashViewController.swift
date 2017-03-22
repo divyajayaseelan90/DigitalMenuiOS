@@ -14,7 +14,8 @@ class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        if UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantId) != nil
+        {
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         activityIndicator.frame = CGRect(x: (self.logoImageView.frame.size.width-46)/2, y: (self.logoImageView.frame.size.height-46)/2, width: 46, height: 46)
         activityIndicator.startAnimating()
@@ -27,10 +28,10 @@ class SplashViewController: UIViewController {
                 self.logoImageView.imageFromServerURL(urlString: imageURL)
                 self.logoImageView.contentMode = .scaleAspectFit
                 self.logoImageView.layer.masksToBounds = false
-                self.logoImageView.layer.cornerRadius = self.logoImageView.frame.size.height/2
+                self.logoImageView.layer.cornerRadius = 5
                 self.logoImageView.clipsToBounds = true
-                self.logoImageView.layer.borderWidth = 1
-                self.logoImageView.layer.borderColor = UIColor.clear.cgColor
+                self.logoImageView.layer.borderWidth = 2
+                self.logoImageView.layer.borderColor = UIColor.white.cgColor
             }
             API.getTaxes(completionClosure: { _ in
             
@@ -43,6 +44,11 @@ class SplashViewController: UIViewController {
             
            
         })
+        }else{
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.02, execute: {
+                self.loadMainView()
+            })
+        }
         
         
         

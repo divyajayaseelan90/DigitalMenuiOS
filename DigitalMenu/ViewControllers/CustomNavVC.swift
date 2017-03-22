@@ -20,7 +20,8 @@ class CustomNavVC:UIViewController {
     var customNavigationViewDelegate : customNavigationDelegate?
     
     @IBOutlet weak var orderBtn : UIButton!
-    
+    @IBOutlet weak var tableBtn : UIButton!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,22 +30,24 @@ class CustomNavVC:UIViewController {
         super.viewWillAppear(animated)
 
         
-        self.navigationController?.navigationBar.addSubview(logoImageView)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         
-        if UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantApppLogo)?.characters.count != 0
+        if UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantApppLogo)?.characters.count != 0 && UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantApppLogo) != nil
         {
             
             print("logo URL\(UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantApppLogo))")
-            
-            self.navigationController?.navigationBar.addSubview(logoImageView)
             
             self.logoImageView.imageFromServerURL(urlString: UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantApppLogo)!)
            
         }
         
+        if UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.Tablenumber)?.characters.count != 0 && UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.Tablenumber) != nil
+        {
+            
+            tableBtn.setTitle((UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.Tablenumber)), for: .normal)
+        }
         logoImageView.contentMode = .scaleAspectFill
         logoImageView.layer.masksToBounds = false
         logoImageView.layer.cornerRadius = 3

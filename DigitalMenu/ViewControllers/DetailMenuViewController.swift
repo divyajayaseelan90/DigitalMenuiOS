@@ -10,6 +10,8 @@ import Foundation
 protocol DetaiMenuDelegate
 {
     func removeSuperView()
+    func DetailMenuAddAction()
+    
 }
 class DetailMenuViewController: UIViewController
 {
@@ -76,6 +78,8 @@ class DetailMenuViewController: UIViewController
         if let menuQualifierArray = detailMenuDic?["menuQualifiers"] as? NSArray
         {
             
+            if menuQualifierArray.count == 1{
+
             let subMenuQualifier = menuQualifierArray[0] as! NSDictionary
             
             let orderNumber = subMenuQualifier["orderNumber"] as? Int
@@ -119,6 +123,7 @@ class DetailMenuViewController: UIViewController
                 spicy5.isHidden = false
                 
             }
+            }
         }
 
     }
@@ -143,6 +148,7 @@ class DetailMenuViewController: UIViewController
     @IBAction func AddMenuAction(_ sender: Any) {
         
         API.createMenuDic(dic: detailMenuDic!)
+        detailMenuDelegate?.DetailMenuAddAction()
     }
     
 }

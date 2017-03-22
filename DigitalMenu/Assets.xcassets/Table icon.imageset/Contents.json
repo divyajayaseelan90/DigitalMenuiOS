@@ -2,12 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "RestoMenu - Logo.png",
+      "filename" : "Table icon.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "RestoMenu - Logo@2x.png",
       "scale" : "2x"
     },
     {

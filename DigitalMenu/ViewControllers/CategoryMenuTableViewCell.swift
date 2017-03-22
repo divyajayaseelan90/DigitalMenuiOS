@@ -30,7 +30,8 @@ class CategoryMenuTableViewCell: UICollectionViewCell {
     
     @IBOutlet weak var fv_menuTitle: UILabel!
     @IBOutlet weak var fv_menuTitlePrice: UIButton!
-   
+    @IBOutlet weak var animationLabel : UIView!
+    
    
     @IBOutlet weak var firsView : UIView!
  
@@ -90,7 +91,7 @@ class CategoryMenuTableViewCell: UICollectionViewCell {
         
         if let menuQualifierArray = detailDic["menuQualifiers"] as? NSArray
         {
-            
+            if menuQualifierArray.count == 1{
             let subMenuQualifier = menuQualifierArray[0] as! NSDictionary
             
             let orderNumber = subMenuQualifier["orderNumber"] as? Int
@@ -133,6 +134,7 @@ class CategoryMenuTableViewCell: UICollectionViewCell {
                 spicy4.isHidden = false
                 spicy5.isHidden = false
 
+            }
             }
         }
         
