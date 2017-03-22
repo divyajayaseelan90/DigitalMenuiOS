@@ -164,7 +164,11 @@ class AdminViewController: UIViewController,UICollectionViewDataSource, UICollec
                 
                 if message == AlertMessage.success.rawValue
                 {
-                    
+                    API.syncRestaurantConfig(completionClosure: { _ in
+                          API.getTaxes(completionClosure: { _ in
+                        })
+                        
+                    })
                     UserDefaults.standard.setValue(response?["session"] as? String, forKey: DigitalMenu.Userdefaults.RestaurantId)
                     UserDefaults.standard.setValue(self.pinTxtFld.text, forKey: DigitalMenu.Userdefaults.Pin)
                     NotificationCenter.default.post(name: Notification.Name(DigitalMenu.LocalNotification.name), object: nil)

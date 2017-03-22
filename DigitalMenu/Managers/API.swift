@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-public let baseHttpUrl = "http://52.220.104.17:8080/redchilli/api/"//"https://digitalapi.dobango.com/api/"//"http://52.220.104.17:8080/redchilli/api/"
+public let baseHttpUrl = "https://digitalapi.dobango.com/api/"//"http://52.220.104.17:8080/redchilli/api/"
 
 class URLPath {
     static let getTableMenuItems : String = "tablet/getTabletMenuItems"
@@ -298,25 +298,24 @@ class API : NSObject
 
             }
             
-            var totalItemCount : Int = 0
-            
-            for index in  0..<arrayOfSavedMenu.count
-            {
-                let subdic = arrayOfSavedMenu[index] as NSDictionary
-                
-                totalItemCount += subdic["count"] as! Int
-                
-            }
-            API.Static.totalItemCount = totalItemCount
-            
 
         }else{
             API.Static.arrayOfItemDic.append(detailMenudic as NSDictionary)
             API.Static.totalItemCount = 1
         }
         
-        print("ordered item list\(API.Static.arrayOfItemDic)")
+        
+        var totalItemCount : Int = 0
+        
+        let totalOrderMenuArray :[NSDictionary] = API.Static.arrayOfItemDic
 
+        for index in  0..<totalOrderMenuArray.count
+        {
+            let subdic = totalOrderMenuArray[index] as NSDictionary
+            totalItemCount += subdic["count"] as! Int
+            
+        }
+        API.Static.totalItemCount = totalItemCount
         self.calculateNetAmount()
         
     }

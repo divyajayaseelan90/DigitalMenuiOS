@@ -30,20 +30,27 @@ class OrderListingTableViewCell: UITableViewCell {
         
         print("itemAmount\(itemAmount)")
         
-        if itemAmount > 1{
+        if itemCount > 1{
             itemCount -= 1
             updateItem()
+            updateOrder()
+
         }
 
     }
     @IBAction func plusAction(_ sender: Any) {
         itemCount += 1
         updateItem()
+        updateOrder()
     }
-    func updateItem()
+    func updateOrder()
     {
         API.createMenuDic(dic: orderItemDic!)
         orderListingDelegate?.updateNetAmount()
+    }
+    func updateItem()
+    {
+       
         totalAmount =  itemAmount * Float(itemCount)
 
         self.quantity.text = String(itemCount)

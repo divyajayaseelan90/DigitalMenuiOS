@@ -7,7 +7,10 @@
 //
 
 import Foundation
-
+protocol OrderItemDelegate {
+    func addMenuItem()
+    func animationOrder(tag : Int)
+}
 class OrderViewController : UIViewController,UITableViewDelegate,UITableViewDataSource
 {
     
@@ -19,6 +22,7 @@ class OrderViewController : UIViewController,UITableViewDelegate,UITableViewData
     
     
     var arrayOfOrderItem = [NSDictionary]()
+    var delegate : OrderItemDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +36,9 @@ class OrderViewController : UIViewController,UITableViewDelegate,UITableViewData
         
 
         arrayOfOrderItem = API.Static.arrayOfItemDic
+        
+        print("arrayOfOrderItem\(API.Static.arrayOfItemDic)")
+
         orderListingTableView.reloadData()
         
         serviceTax.text = "₹ "+String(API.Static.serviceTax)
@@ -63,7 +70,7 @@ class OrderViewController : UIViewController,UITableViewDelegate,UITableViewData
      cell = tableView.dequeueReusableCell(withIdentifier: OrderListingTableViewCell.identifier) as! OrderListingTableViewCell
      cell.sno.text = String(indexPath.row+1)
      cell.setItem(dic: arrayOfOrderItem[indexPath.row])
-    cell.orderListingDelegate = self
+     cell.orderListingDelegate = self
      cell.backgroundColor = UIColor.clear
      cell.selectionStyle = UITableViewCellSelectionStyle.none
      return cell
@@ -78,6 +85,7 @@ extension OrderViewController : orderListingDelegate
         
         netAmount.text = "₹ "+String(API.Static.netAmount)
 
+        delegate?.addMenuItem()
         
     }
 }

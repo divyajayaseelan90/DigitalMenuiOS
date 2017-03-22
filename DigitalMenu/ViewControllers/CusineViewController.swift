@@ -85,6 +85,9 @@ class CusineViewController: UIViewController {
         }
         else if segue.identifier == Segues.OrderViewSegue.rawValue {
             self.orderViewController = segue.destination as? OrderViewController
+            if let viewController = orderViewController {
+                viewController.delegate = self
+            }
 
         }
         else if segue.identifier == Segues.AdminSegue.rawValue {
@@ -135,7 +138,7 @@ class CusineViewController: UIViewController {
         }
     }
 }
-extension CusineViewController: CategoryMenuDelegate,MenuItemDelegate {
+extension CusineViewController: CategoryMenuDelegate,MenuItemDelegate,OrderItemDelegate {
     
     func animationOrder(tag: Int) {
         /*

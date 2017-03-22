@@ -38,6 +38,12 @@ class DetailMenuViewController: UIViewController
         
         print("detailMenuDic \(detailMenuDic)")
         
+        spicy1.isHidden = true
+        spicy2.isHidden = true
+        spicy3.isHidden = true
+        spicy4.isHidden = true
+        spicy5.isHidden = true
+        
         //let tap = UITapGestureRecognizer(target: self, action: #selector(tapAction(sender:)))
         //self.view.addGestureRecognizer(tap)
         
