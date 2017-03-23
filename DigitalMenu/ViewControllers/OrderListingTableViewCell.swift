@@ -33,7 +33,7 @@ class OrderListingTableViewCell: UITableViewCell {
         if itemCount > 1{
             itemCount -= 1
             updateItem()
-            updateOrder()
+            updateOrder(type: NetAmountOperation.Minus.rawValue)
 
         }
 
@@ -41,11 +41,11 @@ class OrderListingTableViewCell: UITableViewCell {
     @IBAction func plusAction(_ sender: Any) {
         itemCount += 1
         updateItem()
-        updateOrder()
+        updateOrder(type: NetAmountOperation.Plus.rawValue)
     }
-    func updateOrder()
+    func updateOrder(type :String)
     {
-        API.createMenuDic(dic: orderItemDic!)
+        API.createMenuDic(dic: orderItemDic!,type: type)
         orderListingDelegate?.updateNetAmount()
     }
     func updateItem()

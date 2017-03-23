@@ -21,6 +21,8 @@ class DigitalMenu {
         static let TableMenuItem : String = "tableMenuItem"
         static let RestaurantAppDescription : String = "RestaurantAppDescription"
         static let RestaurantApppLogo: String = "RestaurantApppLogo"
+        static let RestaurantApppBackgroundImage: String = "RestaurantApppBackgroundImage"
+
     }
     
     class LocalNotification

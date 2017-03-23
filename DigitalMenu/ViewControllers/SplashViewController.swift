@@ -31,7 +31,7 @@ class SplashViewController: UIViewController {
                 self.logoImageView.layer.cornerRadius = 5
                 self.logoImageView.clipsToBounds = true
                 self.logoImageView.layer.borderWidth = 2
-                self.logoImageView.layer.borderColor = UIColor.white.cgColor
+                self.logoImageView.layer.borderColor = UIColor.clear.cgColor
             }
             API.getTaxes(completionClosure: { _ in
             

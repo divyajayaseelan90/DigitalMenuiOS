@@ -115,7 +115,7 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
         categoryMenuDelegate?.animationOrder(tag: button.tag)
 
         let arrayOfRestItems = dicOfCategoryItems[catType!] as? [NSDictionary]
-        API.createMenuDic(dic: (arrayOfRestItems?[button.tag])!)
+        API.createMenuDic(dic: (arrayOfRestItems?[button.tag])! ,type: NetAmountOperation.Plus.rawValue)
         
         categoryMenuDelegate?.addMenuItem()
         
@@ -131,7 +131,7 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
         
         print("Load Category Menu\(type) dic \(dicOfCategoryItems)")
         
-        if dicOfCategoryItems.isEmpty {
+        if dicOfCategoryItems.isEmpty  || catType?.characters.count != 0{
         let outData = UserDefaults.standard.data(forKey: DigitalMenu.Userdefaults.TableMenuItem)
         let dict = NSKeyedUnarchiver.unarchiveObject(with: outData!) as? NSDictionary
         
@@ -215,9 +215,16 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
     func loadFilterValue(arrayOfFilter : [NSDictionary])
     {
         
+        let subViews = self.filterScrollView.subviews
+        for subview in subViews{
+            subview.removeFromSuperview()
+        }
+
         print("arrayOfFilter\(arrayOfFilter)")
         
         arrayOfFilterType = arrayOfFilter
+        
+        currenPage = 1
         
         self.filterScrollView.translatesAutoresizingMaskIntoConstraints = false
         var totalCount = arrayOfFilterType.count
@@ -285,8 +292,16 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
             
         }
         self.filterScrollView.contentSize = CGSize(width: self.filterScrollView.frame.size.width * CGFloat(TotalPage) , height: self.filterScrollView.frame.size.height)
-
-        updatePageValue()
+        self.filterScrollView.scrollRectToVisible(CGRect(x:self.filterScrollView.frame.size.width * CGFloat(currenPage-1), y: self.filterScrollView.frame.origin.y, width: self.filterScrollView.frame.size.width, height: self.filterScrollView.frame.size.height), animated: true)
+        
+        if currenPage == TotalPage
+        {
+            leftArrowBtn.isHidden = true
+            rightArrowBtn.isHidden = true
+            
+        }else{
+            updatePageValue()
+        }
         
     }
     
@@ -340,7 +355,13 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
             {
                 let mainFilterDic = subdicOfFilter[filterIndex] as NSDictionary
                 
-                if mainFilterDic == filterDic
+                let Mainfiltername =  mainFilterDic["name"] as? String
+                let filtername =  filterDic["name"] as? String
+
+                print("mainFilterDic\(mainFilterDic)")
+                print("filterDic\(filterDic)")
+
+                if Mainfiltername == filtername
                 {
                     subArrayOfFilterItems.append(maindic)
                 }
@@ -372,12 +393,7 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
                 rightArrowBtn.isHidden = false
             }
             
-        }else if currenPage == TotalPage
-        {
-            leftArrowBtn.isHidden = true
-            rightArrowBtn.isHidden = true
-
-        }else  if self.currenPage >= self.TotalPage{
+        }else if self.currenPage >= self.TotalPage{
             
             leftArrowBtn.isHidden = false
             rightArrowBtn.isHidden = true

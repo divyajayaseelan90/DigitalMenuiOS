@@ -16,6 +16,14 @@ class WelcomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(CusineViewController.methodOfReceivedNotification), name:NSNotification.Name(rawValue: DigitalMenu.LocalNotification.name), object: nil)
+
+        self.loadValues()
+        
+    }
+    func loadValues()
+    {
+        
         if UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantAppDescription)?.characters.count != 0
         {
             descTextView.text = UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantAppDescription)
@@ -23,8 +31,9 @@ class WelcomeViewController: UIViewController {
         {
             descTextView.text = DefaultText.restaurantDesc.rawValue
         }
-
-        
     }
-    
+    func methodOfReceivedNotification(notification: Notification){
+        
+        loadValues()
+    }
 }

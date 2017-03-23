@@ -73,11 +73,14 @@ class DetailMenuViewController: UIViewController
             for index in 0..<filterArray.count
             {
                 let subDic = filterArray[index] as! NSDictionary
-                let orderNumber = subDic["orderNumber"] as? Int
+                let name = subDic["name"] as? String
                 
-                if orderNumber == 1
+                if name == "vegiterian"
                 {
-                    indicatorImg.image = UIImage.init(named: "veg indicator_DM")
+                    indicatorImg.image = UIImage.init(named: "veg indicator")
+                }else{
+                    indicatorImg.image = UIImage.init(named: "non veg indicator_DM")
+                    
                 }
             }
         }
@@ -88,47 +91,32 @@ class DetailMenuViewController: UIViewController
 
             let subMenuQualifier = menuQualifierArray[0] as! NSDictionary
             
-            let orderNumber = subMenuQualifier["orderNumber"] as? Int
-            
-            if orderNumber == 1
-            {
-                spicy1.isHidden = false
-                spicy2.isHidden = true
-                spicy3.isHidden = true
-                spicy4.isHidden = true
-                spicy5.isHidden = true
+                let name = subMenuQualifier["name"] as? String
                 
-            }else if orderNumber == 2
-            {
-                spicy1.isHidden = false
-                spicy2.isHidden = false
-                spicy3.isHidden = true
-                spicy4.isHidden = true
-                spicy5.isHidden = true
-            }
-            else if orderNumber == 3
-            {
-                spicy1.isHidden = false
-                spicy2.isHidden = false
-                spicy3.isHidden = false
-                spicy4.isHidden = true
-                spicy5.isHidden = true
-            }
-            else if orderNumber == 4
-            {
-                spicy1.isHidden = false
-                spicy2.isHidden = false
-                spicy3.isHidden = false
-                spicy4.isHidden = false
-                spicy5.isHidden = true
-            }else{
-                spicy1.isHidden = false
-                spicy2.isHidden = false
-                spicy3.isHidden = false
-                spicy4.isHidden = false
-                spicy5.isHidden = false
-                
-            }
+                if name == "spicy-1"
+                {
+                    spicy1.isHidden = false
+                    spicy2.isHidden = true
+                    spicy3.isHidden = true
+                    spicy4.isHidden = true
+                    spicy5.isHidden = true
+                    
+                }else if name == "spicy-2"
+                {
+                    spicy1.isHidden = false
+                    spicy2.isHidden = false
+                    spicy3.isHidden = true
+                    spicy4.isHidden = true
+                    spicy5.isHidden = true
+                }
+                else if name == "spicy-3"
+                {
+                    spicy1.isHidden = false
+                    spicy2.isHidden = false
+                    spicy3.isHidden = false
+                    spicy4.isHidden = true
+                    spicy5.isHidden = true
+                }
             }
         }
 
@@ -153,7 +141,7 @@ class DetailMenuViewController: UIViewController
     }
     @IBAction func AddMenuAction(_ sender: Any) {
         
-        API.createMenuDic(dic: detailMenuDic!)
+        API.createMenuDic(dic: detailMenuDic!,type: NetAmountOperation.Plus.rawValue)
         detailMenuDelegate?.DetailMenuAddAction()
     }
     

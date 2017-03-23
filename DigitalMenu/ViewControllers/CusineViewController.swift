@@ -21,7 +21,8 @@ class CusineViewController: UIViewController {
     weak var adminViewController: AdminViewController?
     
     
-
+    @IBOutlet weak var bgImageView : UIImageView!
+    
     @IBOutlet weak var ListOfItemContainerView : UIView!
     @IBOutlet weak var welcomeContainerView : UIView!
     @IBOutlet weak var splContainerView : UIView!
@@ -43,9 +44,7 @@ class CusineViewController: UIViewController {
         if UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantId) != nil
         {
             containerView(type: viewType.homeView.rawValue)
-            API.getTableMenuItems(completionClosure:{_ in ()
-                
-            })
+           loadValues()
         }else{
             
             containerView(type: viewType.adminView.rawValue)
@@ -53,10 +52,27 @@ class CusineViewController: UIViewController {
             
         }
     }
-    func methodOfReceivedNotification(notification: Notification){
+    
+    func loadValues()
+    {
+        if UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantApppBackgroundImage)?.characters.count != 0 && UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantApppBackgroundImage) != nil
+        {
+            
+            print("logo URL\(UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantApppBackgroundImage))")
+            
+            self.bgImageView.imageFromServerURL(urlString: UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.RestaurantApppBackgroundImage)!)
+            self.bgImageView.contentMode = .scaleAspectFill
+            
+        }else{
+            self.bgImageView.image = UIImage(named: "main background")
+        }
         API.getTableMenuItems(completionClosure:{_ in ()
             
         })
+    }
+    func methodOfReceivedNotification(notification: Notification){
+        
+       loadValues()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -228,6 +244,7 @@ extension CusineViewController: customNavigationDelegate {
     
     func showHome() {
         
+        NotificationCenter.default.post(name: Notification.Name(DigitalMenu.LocalNotification.refreshMenu), object: nil)
         containerView(type: viewType.homeView.rawValue)
 
     }

@@ -53,6 +53,11 @@ class MenuViewController: UIViewController,UICollectionViewDataSource,UICollecti
     }
     
     func methodOfReceivedNotification(notification: Notification){
+        
+        let subViews = self.restaurantScrollView.subviews
+        for subview in subViews{
+            subview.removeFromSuperview()
+        }
     
         let outData = UserDefaults.standard.data(forKey: DigitalMenu.Userdefaults.TableMenuItem)
         let dict = NSKeyedUnarchiver.unarchiveObject(with: outData!) as? NSDictionary
@@ -193,7 +198,6 @@ class MenuViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         restSpl = dic["name"] as? String
 
-        //menuTableView.reloadData()
         itemCollectionView.reloadData()
 
         prevBtn = button
@@ -233,7 +237,7 @@ class MenuViewController: UIViewController,UICollectionViewDataSource,UICollecti
         menuItemDelegate?.animationOrder(tag: button.tag)
         
         let arrayOfRestItems = dicOfRestSplItems[restSpl!] as? [NSDictionary]
-        API.createMenuDic(dic: (arrayOfRestItems?[button.tag])!)
+        API.createMenuDic(dic: (arrayOfRestItems?[button.tag])!,type: NetAmountOperation.Plus.rawValue)
         
         menuItemDelegate?.addMenuItem()
         

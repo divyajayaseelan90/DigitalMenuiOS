@@ -52,6 +52,8 @@ class CatergoryTableViewCell: UITableViewCell {
     
     func setCategory(dic : NSDictionary) {
         
+        categoryButton.isSelected = false
+        categoryLogo.frame.origin.x = 154
         categoryLogo.translatesAutoresizingMaskIntoConstraints = false
         categoryLabel.text = dic["name"] as? String
         let menuImage = dic["icon"] as? String

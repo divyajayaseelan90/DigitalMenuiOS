@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-public let baseHttpUrl = "https://digitalapi.dobango.com/api/"//"http://52.220.104.17:8080/redchilli/api/"
+public let baseHttpUrl = "http://52.220.104.17:8080/redchilli/api/"//"https://digitalapi.dobango.com/api/"//"http://52.220.104.17:8080/redchilli/api/"
 
 class URLPath {
     static let getTableMenuItems : String = "tablet/getTabletMenuItems"
@@ -34,6 +34,9 @@ class API : NSObject
         static var laxuryTax : Float = 0
         static var netAmount : Float = 0
 
+        static var netAmountserviceTax : Float = 0
+        static var netAmountserviceCharge : Float = 0
+        static var netAmountlaxuryTax : Float = 0
     }
     
     class func getTableMenuItems (completionClosure : @escaping (_ displayMessage : String) -> ()) {
@@ -187,10 +190,12 @@ class API : NSObject
                 
                 var desc : String = ""
                 var imageURl : String = ""
-                
+                var bgimageURl : String = ""
+
                 UserDefaults.standard.setValue("", forKey: DigitalMenu.Userdefaults.RestaurantAppDescription)
                 UserDefaults.standard.setValue("", forKey: DigitalMenu.Userdefaults.RestaurantApppLogo)
-                
+                UserDefaults.standard.setValue("", forKey: DigitalMenu.Userdefaults.RestaurantApppBackgroundImage)
+
                 if message == AlertMessage.success.rawValue
                 {
                     let responseArray = response?["data"]  as! [NSDictionary]
@@ -214,7 +219,13 @@ class API : NSObject
                                 UserDefaults.standard.setValue(imageURl, forKey: DigitalMenu.Userdefaults.RestaurantApppLogo)
                                 
                             }
-                            
+                            else if configname == "background-image"
+                            {
+                                bgimageURl = (subdic["value"] as? String)!
+                                UserDefaults.standard.setValue(bgimageURl, forKey: DigitalMenu.Userdefaults.RestaurantApppBackgroundImage)
+                                
+                            }
+
                         }
                         
                     }
@@ -261,7 +272,7 @@ class API : NSObject
         }
     }
     
-    class func createMenuDic(dic: NSDictionary)
+    class func createMenuDic(dic: NSDictionary , type : String)
     {
         var detailMenudic : [String : AnyObject] = [:]
         
@@ -286,7 +297,11 @@ class API : NSObject
                 
                 totalCount = filterDic["count"] as! Int
                 
+                if type == NetAmountOperation.Plus.rawValue{
                 totalCount += 1
+                }else{
+                    totalCount -= 1
+                }
                 
                 let index = arrayOfSavedMenu.index(of: filterDic)
                 detailMenudic["count"] = totalCount as AnyObject?
@@ -339,7 +354,12 @@ class API : NSObject
             
         }
         
-        netAmount = totalItemAmount - API.Static.serviceTax - API.Static.serviceCharge - API.Static.laxuryTax
+        API.Static.netAmountserviceTax = calculateTaxDeduction(amount: totalItemAmount, percentage:  API.Static.serviceTax)
+        API.Static.netAmountserviceCharge = calculateTaxDeduction(amount: totalItemAmount, percentage:  API.Static.serviceCharge)
+        API.Static.netAmountlaxuryTax = calculateTaxDeduction(amount: totalItemAmount, percentage:  API.Static.laxuryTax)
+        
+
+        netAmount = totalItemAmount + API.Static.netAmountserviceTax + API.Static.netAmountserviceCharge + API.Static.netAmountlaxuryTax
         API.Static.netAmount = netAmount
         
         print("totalItemAmount \(netAmount)")
@@ -350,3 +370,8 @@ class API : NSObject
     
     }
 
+func calculateTaxDeduction (amount : Float, percentage : Float) -> Float
+    {
+        let amountOfDeduction : Float = (amount * percentage)/100
+        return amountOfDeduction
+    }

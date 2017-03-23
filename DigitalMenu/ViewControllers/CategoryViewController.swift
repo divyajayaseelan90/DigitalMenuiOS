@@ -31,7 +31,7 @@ class CategoryViewController: UIViewController,UITableViewDelegate,UITableViewDa
     
     func methodOfReceivedNotification(notification: Notification){
         
-        
+        prevIndexpath = nil
         let outData = UserDefaults.standard.data(forKey: DigitalMenu.Userdefaults.TableMenuItem)
         let dict = NSKeyedUnarchiver.unarchiveObject(with: outData!) as? NSDictionary
         

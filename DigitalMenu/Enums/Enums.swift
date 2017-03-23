@@ -31,6 +31,11 @@ enum DefaultText : String
     case textEmpty = "Please Enter the pin",placeHolderText = "Write here..." ,restaurantDesc = ""
 }
 
+enum NetAmountOperation : String
+{
+    case Plus = "Plus" , Minus = "Minus"
+}
+
 
 extension UIImageView {
     public func imageFromServerURL(urlString: String) {

@@ -41,9 +41,9 @@ class OrderViewController : UIViewController,UITableViewDelegate,UITableViewData
 
         orderListingTableView.reloadData()
         
-        serviceTax.text = "₹ "+String(API.Static.serviceTax)
-        serviceCharge.text = "₹ "+String(API.Static.serviceCharge)
-        laxuryTax.text = "₹ "+String(API.Static.laxuryTax)
+        serviceTax.text = "₹ "+String(API.Static.netAmountserviceTax)
+        serviceCharge.text = "₹ "+String(API.Static.netAmountserviceCharge)
+        laxuryTax.text = "₹ "+String(API.Static.netAmountlaxuryTax)
         netAmount.text = "₹ "+String(API.Static.netAmount)
 
         

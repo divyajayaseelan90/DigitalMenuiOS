@@ -48,12 +48,12 @@ class CustomNavVC:UIViewController {
             
             tableBtn.setTitle((UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.Tablenumber)), for: .normal)
         }
-        logoImageView.contentMode = .scaleAspectFill
+        logoImageView.contentMode = .scaleAspectFit
         logoImageView.layer.masksToBounds = false
         logoImageView.layer.cornerRadius = 3
         logoImageView.clipsToBounds = true
         logoImageView.layer.borderWidth = 2
-        logoImageView.layer.borderColor = UIColor.white.cgColor
+        logoImageView.layer.borderColor = UIColor.clear.cgColor
     }
     
     @IBAction func showListOfTablesAction(_ sender: Any) {
