@@ -38,6 +38,7 @@
 		48F5C4911E810587005907D1 /* OrderListingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F5C4901E810587005907D1 /* OrderListingTableViewCell.swift */; };
 		48F5C4931E824455005907D1 /* AdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F5C4921E824455005907D1 /* AdminViewController.swift */; };
 		48F5C4991E8264FC005907D1 /* TableNumberCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F5C4981E8264FC005907D1 /* TableNumberCollectionCell.swift */; };
+		48F5C49B1E83E9D0005907D1 /* TaxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F5C49A1E83E9CC005907D1 /* TaxTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +80,7 @@
 		48F5C4901E810587005907D1 /* OrderListingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderListingTableViewCell.swift; sourceTree = "<group>"; };
 		48F5C4921E824455005907D1 /* AdminViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminViewController.swift; sourceTree = "<group>"; };
 		48F5C4981E8264FC005907D1 /* TableNumberCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableNumberCollectionCell.swift; sourceTree = "<group>"; };
+		48F5C49A1E83E9CC005907D1 /* TaxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +157,7 @@
 				48F5C4901E810587005907D1 /* OrderListingTableViewCell.swift */,
 				48F5C4921E824455005907D1 /* AdminViewController.swift */,
 				48F5C4981E8264FC005907D1 /* TableNumberCollectionCell.swift */,
+				48F5C49A1E83E9CC005907D1 /* TaxTableViewCell.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 				48570D751E6E8D7000142359 /* API.swift in Sources */,
 				48570D8A1E6EBD2D00142359 /* CusineViewController.swift in Sources */,
 				48570D9A1E76B75700142359 /* CustomNavVC.swift in Sources */,
+				48F5C49B1E83E9D0005907D1 /* TaxTableViewCell.swift in Sources */,
 				48F5C48D1E8009AC005907D1 /* OrderViewController.swift in Sources */,
 				48570D881E6E92BB00142359 /* SVRadialGradientLayer.m in Sources */,
 				48570D981E769C2000142359 /* SplashViewController.swift in Sources */,

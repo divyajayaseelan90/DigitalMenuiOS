@@ -17,6 +17,7 @@ class DigitalMenu {
         static let Tablenumber : String = "Tablenumber"
         
         static let FeedbackAppTableNumberArray : String = "FeedbackAppTableNumberArray"
+        static let TaxArray : String = "TaxArray"
 
         static let TableMenuItem : String = "tableMenuItem"
         static let RestaurantAppDescription : String = "RestaurantAppDescription"

@@ -20,10 +20,12 @@ class OrderViewController : UIViewController,UITableViewDelegate,UITableViewData
     @IBOutlet weak var laxuryTax : UILabel!
     @IBOutlet weak var netAmount : UILabel!
     
-    
+    @IBOutlet weak var taxListingTableView : UITableView!
+
     var arrayOfOrderItem = [NSDictionary]()
     var delegate : OrderItemDelegate?
-    
+    var arrayOfTax = [NSDictionary]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,11 +38,16 @@ class OrderViewController : UIViewController,UITableViewDelegate,UITableViewData
         
 
         arrayOfOrderItem = API.Static.arrayOfItemDic
-        
-        print("arrayOfOrderItem\(API.Static.arrayOfItemDic)")
-
         orderListingTableView.reloadData()
+
         
+        let outData = UserDefaults.standard.data(forKey: DigitalMenu.Userdefaults.TaxArray)
+        let dict = NSKeyedUnarchiver.unarchiveObject(with: outData!) as? NSDictionary
+        arrayOfTax = dict?["data"] as! [NSDictionary]
+        taxListingTableView.reloadData()
+
+        
+
         serviceTax.text = "₹ "+String(API.Static.netAmountserviceTax)
         serviceCharge.text = "₹ "+String(API.Static.netAmountserviceCharge)
         laxuryTax.text = "₹ "+String(API.Static.netAmountlaxuryTax)
@@ -57,34 +64,75 @@ class OrderViewController : UIViewController,UITableViewDelegate,UITableViewData
      }
     
      func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
+        if tableView == orderListingTableView{
+            return 40
+        }else{
+            return 30
+        }
      }
      
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       return arrayOfOrderItem.count
+        if tableView == orderListingTableView{
+            return arrayOfOrderItem.count
+        }else{
+            return arrayOfTax.count
+
+        }
      
      }
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
      
-     var cell : OrderListingTableViewCell
-     cell = tableView.dequeueReusableCell(withIdentifier: OrderListingTableViewCell.identifier) as! OrderListingTableViewCell
-     cell.sno.text = String(indexPath.row+1)
-     cell.setItem(dic: arrayOfOrderItem[indexPath.row])
-     cell.orderListingDelegate = self
-     cell.backgroundColor = UIColor.clear
-     cell.selectionStyle = UITableViewCellSelectionStyle.none
-     return cell
-     
+        if tableView == orderListingTableView{
+
+         var cell : OrderListingTableViewCell
+         cell = tableView.dequeueReusableCell(withIdentifier: OrderListingTableViewCell.identifier) as! OrderListingTableViewCell
+         cell.sno.text = String(indexPath.row+1)
+         cell.setItem(dic: arrayOfOrderItem[indexPath.row])
+         cell.orderListingDelegate = self
+         cell.backgroundColor = UIColor.clear
+         cell.selectionStyle = UITableViewCellSelectionStyle.none
+                return cell
+
+        }else{
+            
+            print("index \(arrayOfTax[indexPath.row]) identifier \(TaxTableViewCell.identifier)")
+            
+            var cell : TaxTableViewCell
+            cell = tableView.dequeueReusableCell(withIdentifier: TaxTableViewCell.identifier) as! TaxTableViewCell
+            
+            let subdic = arrayOfTax[indexPath.row]
+            
+            if let taxType = subdic["taxType"] as? NSDictionary{
+                
+                let taxdisplayName = taxType["displayName"] as? String
+                cell.taxLabel.text = taxdisplayName! + ":"
+
+            }
+            cell.taxLabel.backgroundColor = UIColor.clear
+
+            let totalTaxAmount : Float = API.calculateTaxDeduction(amount: API.Static.totalAmount, percentage: (subdic["tax"] as? Float)!)
+            
+            cell.taxLabelAmount.text = "₹ "+String(totalTaxAmount)
+            cell.taxLabelAmount.backgroundColor = UIColor.clear
+            
+            cell.backgroundColor = UIColor.clear
+            
+            return cell
+            
+        }
      
      }
- 
+    func calculateTaxDeduction (amount : Float, percentage : Float) -> Float
+    {
+        let amountOfDeduction : Float = (amount * percentage)/100
+        return amountOfDeduction
+    }
 }
 extension OrderViewController : orderListingDelegate
 {
     func updateNetAmount() {
         
         netAmount.text = "₹ "+String(API.Static.netAmount)
-
         delegate?.addMenuItem()
         
     }

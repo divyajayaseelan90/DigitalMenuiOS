@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-public let baseHttpUrl = "http://52.220.104.17:8080/redchilli/api/"//"https://digitalapi.dobango.com/api/"//"http://52.220.104.17:8080/redchilli/api/"
+public let baseHttpUrl = "https://digitalapi.dobango.com/api/"//"http://52.220.104.17:8080/redchilli/api/"
 
 class URLPath {
     static let getTableMenuItems : String = "tablet/getTabletMenuItems"
@@ -33,6 +33,7 @@ class API : NSObject
         static var serviceCharge : Float = 0
         static var laxuryTax : Float = 0
         static var netAmount : Float = 0
+        static var totalAmount : Float = 0
 
         static var netAmountserviceTax : Float = 0
         static var netAmountserviceCharge : Float = 0
@@ -116,11 +117,15 @@ class API : NSObject
             
             print("response of getTax \(response)")
             
+            
+            UserDefaults.standard.setValue(nil, forKey: DigitalMenu.Userdefaults.TaxArray)
+
             if message == AlertMessage.success.rawValue
             {
-                let responseArray = response?["data"]  as! [NSDictionary]
-                
-                
+                let data = NSKeyedArchiver.archivedData(withRootObject: (response as? NSDictionary)!)
+                UserDefaults.standard.set(data, forKey: DigitalMenu.Userdefaults.TaxArray)
+
+                /*
                 for index in 0..<responseArray.count
                 {
                     let subdic = responseArray[index]
@@ -148,7 +153,7 @@ class API : NSObject
                     }
                     
                 }
-                
+                */
                 completionClosure(displayMessage!)
                 
             }
@@ -331,6 +336,9 @@ class API : NSObject
             
         }
         API.Static.totalItemCount = totalItemCount
+        
+        print("total order Item \(API.Static.arrayOfItemDic)")
+        
         self.calculateNetAmount()
         
     }
@@ -354,12 +362,35 @@ class API : NSObject
             
         }
         
-        API.Static.netAmountserviceTax = calculateTaxDeduction(amount: totalItemAmount, percentage:  API.Static.serviceTax)
+        API.Static.totalAmount = totalItemAmount
+        
+        let outData = UserDefaults.standard.data(forKey: DigitalMenu.Userdefaults.TaxArray)
+        let dict = NSKeyedUnarchiver.unarchiveObject(with: outData!) as? NSDictionary
+        let arrayOfTax : [NSDictionary] = dict?["data"] as! [NSDictionary]
+        
+        var totalTaxDeduction : Float = 0.0
+        
+        for index in 0..<arrayOfTax.count
+        {
+            let subdic = arrayOfTax[index]
+
+             let totalTaxAmount : Float = API.calculateTaxDeduction(amount: API.Static.totalAmount, percentage: (subdic["tax"] as? Float)!)
+            
+            totalTaxDeduction += totalTaxAmount
+        }
+        
+        /*API.Static.netAmountserviceTax = calculateTaxDeduction(amount: totalItemAmount, percentage:  API.Static.serviceTax)
         API.Static.netAmountserviceCharge = calculateTaxDeduction(amount: totalItemAmount, percentage:  API.Static.serviceCharge)
         API.Static.netAmountlaxuryTax = calculateTaxDeduction(amount: totalItemAmount, percentage:  API.Static.laxuryTax)
         
+        */
+        print("service tax\(API.Static.serviceTax) \(API.Static.netAmountserviceTax)")
+        print("service charge\(API.Static.serviceCharge) \(API.Static.netAmountserviceCharge)")
+        print("laxuryTax\(API.Static.laxuryTax) \(API.Static.netAmountlaxuryTax)")
 
-        netAmount = totalItemAmount + API.Static.netAmountserviceTax + API.Static.netAmountserviceCharge + API.Static.netAmountlaxuryTax
+        print("totalamount\(totalItemAmount)")
+        
+        netAmount = totalItemAmount + totalTaxDeduction
         API.Static.netAmount = netAmount
         
         print("totalItemAmount \(netAmount)")
@@ -367,11 +398,11 @@ class API : NSObject
         
     
     }
-    
-    }
-
-func calculateTaxDeduction (amount : Float, percentage : Float) -> Float
+    class func calculateTaxDeduction (amount : Float, percentage : Float) -> Float
     {
         let amountOfDeduction : Float = (amount * percentage)/100
         return amountOfDeduction
     }
+    }
+
+
