@@ -16,7 +16,6 @@ class URLPath {
     static let getTablenumber : String = "tablet/getTableNumbers"
     static let getTax : String = "tablet/getTaxes"
     static let validatePin : String = "tablet/validatePin"
-
 }
 
 class API : NSObject
