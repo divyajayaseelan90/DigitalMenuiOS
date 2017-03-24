@@ -30,7 +30,6 @@ class CategoryMenuTableViewCell: UICollectionViewCell {
     
     @IBOutlet weak var fv_menuTitle: UILabel!
     @IBOutlet weak var fv_menuTitlePrice: UIButton!
-    @IBOutlet weak var animationLabel : UIView!
     
    
     @IBOutlet weak var firsView : UIView!

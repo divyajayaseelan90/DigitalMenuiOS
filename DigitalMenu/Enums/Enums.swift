@@ -33,7 +33,7 @@ enum DefaultText : String
 
 enum NetAmountOperation : String
 {
-    case Plus = "Plus" , Minus = "Minus"
+    case Plus = "Plus" , Minus = "Minus" , Remove = "Remove"
 }
 
 

@@ -104,7 +104,6 @@ class ListOfItemViewController: UIViewController,UICollectionViewDataSource,UICo
         cell.addButton.addTarget(self, action:#selector(itemAddAction(button:)), for: .touchUpInside)
         
         cell.addButton.tag = indexPath.row
-        cell.animationLabel.tag = 100*(indexPath.row + 1)
         
         return cell
         

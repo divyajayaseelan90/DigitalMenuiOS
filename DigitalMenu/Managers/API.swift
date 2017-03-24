@@ -28,9 +28,7 @@ class API : NSObject
         static var arrayOfItemDic = [NSDictionary]()
         static var totalItemCount : Int = 0
 
-        static var serviceTax : Float = 0
-        static var serviceCharge : Float = 0
-        static var laxuryTax : Float = 0
+  
         static var netAmount : Float = 0
         static var totalAmount : Float = 0
 
@@ -302,7 +300,7 @@ class API : NSObject
                 totalCount = filterDic["count"] as! Int
                 
                 if type == NetAmountOperation.Plus.rawValue{
-                totalCount += 1
+                   totalCount += 1
                 }else{
                     totalCount -= 1
                 }
@@ -311,6 +309,11 @@ class API : NSObject
                 detailMenudic["count"] = totalCount as AnyObject?
                 
                 API.Static.arrayOfItemDic[index!]  = detailMenudic as NSDictionary
+
+                if type == NetAmountOperation.Remove.rawValue{
+
+                    API.Static.arrayOfItemDic.remove(at: index!)
+                }
                 
             }else{
                 API.Static.arrayOfItemDic.append(detailMenudic as NSDictionary)
@@ -383,10 +386,7 @@ class API : NSObject
         API.Static.netAmountlaxuryTax = calculateTaxDeduction(amount: totalItemAmount, percentage:  API.Static.laxuryTax)
         
         */
-        print("service tax\(API.Static.serviceTax) \(API.Static.netAmountserviceTax)")
-        print("service charge\(API.Static.serviceCharge) \(API.Static.netAmountserviceCharge)")
-        print("laxuryTax\(API.Static.laxuryTax) \(API.Static.netAmountlaxuryTax)")
-
+       
         print("totalamount\(totalItemAmount)")
         
         netAmount = totalItemAmount + totalTaxDeduction
@@ -401,6 +401,19 @@ class API : NSObject
     {
         let amountOfDeduction : Float = (amount * percentage)/100
         return amountOfDeduction
+    }
+    
+    class func clearOrder()
+    {
+        API.Static.totalAmount = 0
+        API.Static.netAmount = 0
+        API.Static.totalItemCount = 0
+
+        API.Static.netAmountlaxuryTax = 0
+        API.Static.netAmountserviceTax = 0
+        API.Static.netAmountserviceCharge = 0
+
+        API.Static.arrayOfItemDic = []
     }
     }
 

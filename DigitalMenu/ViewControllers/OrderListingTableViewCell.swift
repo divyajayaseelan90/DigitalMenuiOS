@@ -35,6 +35,10 @@ class OrderListingTableViewCell: UITableViewCell {
             updateItem()
             updateOrder(type: NetAmountOperation.Minus.rawValue)
 
+        }else{
+            itemCount = 0
+            updateItem()
+            updateOrder(type: NetAmountOperation.Remove.rawValue)
         }
 
     }

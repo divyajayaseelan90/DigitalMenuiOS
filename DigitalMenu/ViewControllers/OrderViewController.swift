@@ -134,6 +134,8 @@ extension OrderViewController : orderListingDelegate
         
         netAmount.text = "₹ "+String(API.Static.netAmount)
         delegate?.addMenuItem()
-        
+        taxListingTableView.reloadData()
+        loadOrderItem()
+
     }
 }

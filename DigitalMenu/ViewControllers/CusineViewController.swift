@@ -51,6 +51,8 @@ class CusineViewController: UIViewController {
 
             
         }
+        
+        
     }
     
     func loadValues()
@@ -261,7 +263,9 @@ extension CusineViewController: AdminDelegate
         self.showHome()
         if UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.Tablenumber)?.characters.count != 0 && UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.Tablenumber) != nil
         {
-            
+            API.clearOrder()
+            self.customNavigationViewController?.orderBtn.setTitle(String(API.Static.totalItemCount), for: .normal)
+
             self.customNavigationViewController?.tableBtn.setTitle((UserDefaults.standard.string(forKey: DigitalMenu.Userdefaults.Tablenumber)), for: .normal)
         }
     }
